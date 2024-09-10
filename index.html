@@ -12,9 +12,97 @@
 <p> Please enter any data in below field </p>   
 <label for= "data">Input data </label>
 <input type ="text" id="_data"/>
-<button onclick="">Set data </button>
-<button onclick="">Get data </button>
-
+<button onclick="setData()">Set Data </button>
+<button onclick="getData()">Get Data </button>
+<!-- when we clicking above click button ,hw we get the data? through this showdata we can fetch the data so we created this paragraph <p>-->
+<p id = "showData"></p>
     </div>
 </body>
+
+
+<!-- below script is compatible with lot of browsers, purpose :to integrate our frontend (html) to browser where our smart contract is connected ie metamask -->
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"       
+        type="application/javascript"></script>
+
+<script>
+// contract address, contract abi, metamask
+
+const contractAddress = "0x06C2cf6A8BF3579236f26Cca02565A9B7940971B";
+const contractABI =  [
+    {
+      "inputs": [],
+      "name": "data",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getData",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        }
+      ],
+      "name": "setData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
+  
+//we need to connect with metamask with the help of providers -- we can add provider and also signers through will be connecting to html or js file to metamask
+//metamask injects as window.ethereum into each page
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+//send request that metamask requesting permission to connect user account
+provider.send("eth_requestAccounts", []);
+//signer write data into contract
+const signer = provider.getSigner();
+
+//creating instance of the contract
+
+const SetGetContract = new ethers.Contract(contractAddress,contractABI,signer);
+
+async function setData(){
+//we need to add data,hw we identify data? , we use signer to set data and we identiy data with help of ID we provided in above div section
+//writing data in frontend equal to document , document helps to get element by ID, data is in form of value 
+//by tis way we will set the data
+const data = document.getElementById("_data").value;
+await SetGetContract.setData(data);
+
+}
+async function getData(){
+
+//we need to get the data by fetching out from set data value ,calling func getData from smart contract    
+
+const data =await SetGetContract.getData();
+//wt ID we used to display the data in paragraph section ie <p> ie show data , innerText -- coz it is text format equal to _data
+    document.getElementById("showData").innerText = `Here is your value :  ${data}`;
+
+    //Here we get the data in console format
+    console.log(_data);
+
+}
+
+ </script>
+
 </html>
