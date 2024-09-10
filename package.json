@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Poovarasi5603/Dapp-creation/issues"
   },
-  "homepage": "https://github.com/Poovarasi5603/Dapp-creation#readme"
+  "homepage": "https://github.com/Poovarasi5603/Dapp-creation#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.10"
+  }
 }
