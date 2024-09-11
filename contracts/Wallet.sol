@@ -26,16 +26,43 @@ constructor(){
     owner = msg.sender;
 
 }
+//func to deposit crypto in a wallet
+//func need to be payable coz we adding amount
+function deposit() public payable {
+    
+require(msg.sender!= address(0) , "This is not a valid Address!");
+require (msg.value > 0, "Deposit amount must be greater than zero!");
+balance[msg.sender] += msg.value;
 
+//once we deposited the amount the balance changes,now to emit the value
+emit Deposit(msg.sender, msg.value);
 
+}
 
+//func to withdraw crypto from  wallet
+//func need to be payable coz we receiving amount
 
+function withdraw (uint256 amount) public {
+
+require(msg.sender!= address(0) , "This is not a valid Address!");
+require (amount > 0, "withdraw amount must be greater than zero!");
+require (amount <= balance[msg.sender] , "Insufficient balance");
+
+//we changed the balance amount 
+balance[msg.sender] -= amount;
+
+//payment will be made with help of below line
+
+payable(msg.sender).transfer(amount);
+
+//once we transfered we will call withdrawal event 
+emit Deposit(msg.sender, amount);
 
 }
 
 
 
-
+}
 
 
 
