@@ -60,7 +60,9 @@ emit Deposit(msg.sender, amount);
 
 }
 
-
+function balanceOf() public view returns(uint256){
+    return balance[msg.sender];
+}
 
 }
 
